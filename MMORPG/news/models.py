@@ -35,8 +35,7 @@ class Comment(models.Model):
     comment_data = models.DateField(auto_now_add=True)
     accepted = models.BooleanField(default=False, verbose_name='Принято')
 
-    # class Meta:
-    # unique_together = ('post', 'user')
+
 
     def __str__(self):
         return f'{self.text}'

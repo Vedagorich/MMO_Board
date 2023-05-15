@@ -1,6 +1,5 @@
-from django_filters import FilterSet, ChoiceFilter
+from django_filters import FilterSet
 from .models import Comment
-from django import forms
 
 
 class ProfileFilter(FilterSet):
