@@ -1,0 +1,21 @@
+{% extends './base.html' %}
+{% load static %}
+{% block title %} Удалить объявление {% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить объявление?</h2>
+<table>
+
+    <tr>
+        <td>{{ delete.title }}</td>
+        <td>{{ delete.content}}</td>
+        <td>{{ delete.image }}</td>
+        <td>{{ delete.created_at }}</td>
+        <td>{{ delete.author }}</td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}

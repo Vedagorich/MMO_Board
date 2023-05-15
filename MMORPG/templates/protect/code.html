@@ -1,0 +1,22 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %} Регистрация {% endblock title %}
+
+{% block content %}
+<p></p>
+<p>Введите код, который был отправлен на Вашу электронную почту</p>
+<p></p>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Подтвердить" name="_check">
+</form>
+{{ error }}
+<p></p>
+<p>Если код не пришел, пожалуйста, отправьте запрос еще раз</p>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Отправить код на почту" name="_send">
+</form>
+{% endblock content %}
+

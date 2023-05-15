@@ -1,0 +1,41 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %}Личный кабинет {{ user }} {% endblock %}
+
+{% block content %}
+<p></p>
+<h3>Отклики</h3>
+<form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form>
+<ul class="list-group mt-4">
+    {% if user.author.all%}
+    {% for com in filter.qs %}
+    {% for coms in user.author.all %}
+    {% if com.post_id == coms.id %}
+    <li class="list-group-item" href="{% url 'news' com.id %}">
+        <b>{{ coms.title}}</b>
+        <br>
+        <span>{{ com.user }}</span>
+        <span class="pull-right mr-3"><a href="{% url 'news' coms.id %}">Посмотреть</a></span>
+        <br>
+        {% if not com.is_accept %}
+        <span class="pull-right mr-3"><a href="{% url 'accept' com.id %}">Принять</a></span>
+        {% else %}
+        <span class="pull-right mr-3"><a href="{% url 'cancel' com.id %}">Отменить</a></span>
+        <br>
+        {% endif %}
+        <span>{{ com.text }}</span>
+        {% if com.is_accept %}
+        <div class="pull-right"><b>Принят</b></div>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </li>
+    {% endfor %}
+    {% else %}
+    <p>Откликов нет</p>
+    {% endif %}
+</ul>
+{% endblock content %}

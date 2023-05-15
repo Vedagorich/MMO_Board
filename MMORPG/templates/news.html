@@ -1,0 +1,73 @@
+{% extends './base.html' %}
+{% load static %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb" class="mt-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ news.title }}</li>
+                </ol>
+            </nav>
+            <img class="img-fluid rounded " src="{{ news.image.url }}" alt="">
+            <hr>
+            <p class="lead">
+            {{ news.content|safe }}
+            </p>
+            <p class="lead">
+            <p class="text-right">Категория: {{ news.categories }}</p>
+            </p>
+            <hr>
+            <p class="lead text-right">Автор: {{ news.user }}</p>
+            <hr>
+            <p class="text-right">Опубликовано {{ news.created_at }}</p>
+            <hr>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% if user != news.user and user.is_authenticated %}
+<p></p>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <p></p>
+    <input type="submit" value="Оставить отклик">
+</form>
+{% endif %}
+<h2 style="text-align: left;">Отклики</h2>
+
+
+
+{% for com in news.comments.all %}
+{% if com.is_accept or user == news.author %}
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="d-flex text-muted pt-3">
+        <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+            <div class="d-flex justify-content-between">
+                <strong class="text-gray-dark">{{ com.user }}</strong>
+            </div>
+            <span class="d-block"><h3 style="text-align: left;">{{ com.text }}</h3></span>
+            <strong class="text-gray-dark">{{ com.comment_data }}</strong>
+
+            {% endif %}
+            {% if user == news.author %}
+            {% if not com.is_accept %}
+            <span class="pull-right mr-3"><a href="{% url 'accept' news.id %}">Принять</a></span>
+            {% else %}
+            <span class="pull-right mr-3"><a href="{% url 'cancel' news.id %}">Отменить</a></span>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock content %}
